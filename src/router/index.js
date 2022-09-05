@@ -1,6 +1,7 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import DataView from '../views/DataView.vue'
+import ConditionView from '../views/ConditionView.vue'
 
 const routes = [
   {
@@ -20,6 +21,11 @@ const routes = [
     path: '/data-binding',
     name: 'DataView',
     component: DataView
+  },
+  {
+    path: '/conditional',
+    name: 'ConditionView',
+    component: ConditionView
   }
 ]
 

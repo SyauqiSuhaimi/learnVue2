@@ -2,7 +2,8 @@
   <nav>
     <router-link to="/">Home</router-link> |
     <router-link to="/about">To Do List</router-link> | 
-    <router-link :to="{name:'DataView'}">Data Binding</router-link>
+    <router-link :to="{name:'DataView'}">Data Binding</router-link> | 
+    <router-link :to="{name:'ConditionView'}">Conditional Rendering</router-link>
   </nav>
   <router-view/>
 </template>
