@@ -2,6 +2,8 @@ import { createRouter, createWebHashHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import DataView from '../views/DataView.vue'
 import ConditionView from '../views/ConditionView.vue'
+import ParamsView from '../views/ParamsView.vue'
+import ParamDetails from '../views/ParamDetails.vue'
 
 const routes = [
   {
@@ -26,6 +28,17 @@ const routes = [
     path: '/conditional',
     name: 'ConditionView',
     component: ConditionView
+  },
+  {
+    path: '/route-params',
+    name: 'ParamsView',
+    component: ParamsView
+  },
+  {
+    path: '/params/:id',
+    name: 'ParamDetails',
+    component: ParamDetails,
+    props:true
   }
 ]
 
