@@ -4,6 +4,7 @@ import DataView from '../views/DataView.vue'
 import ConditionView from '../views/ConditionView.vue'
 import ParamsView from '../views/ParamsView.vue'
 import ParamDetails from '../views/ParamDetails.vue'
+import ChatApp from '../views/ChatApp.vue'
 
 const routes = [
   {
@@ -39,6 +40,11 @@ const routes = [
     name: 'ParamDetails',
     component: ParamDetails,
     props:true
+  },
+  {
+    path: '/chat-app',
+    name: 'ChatApp',
+    component: ChatApp
   }
 ]
 

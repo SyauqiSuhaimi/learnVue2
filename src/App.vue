@@ -4,7 +4,8 @@
     <router-link to="/about">To Do List</router-link> | 
     <router-link :to="{name:'DataView'}">Data Binding</router-link> | 
     <router-link :to="{name:'ConditionView'}">Conditional Rendering</router-link> | 
-    <router-link :to="{name:'ParamsView'}">Route Parameter</router-link>
+    <router-link :to="{name:'ParamsView'}">Route Parameter</router-link> | 
+    <router-link :to="{name:'ChatApp'}">Chat App</router-link>
   </nav>
   <router-view/>
 </template>
