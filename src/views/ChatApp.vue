@@ -8,8 +8,10 @@
     </div>
 
     <div v-if="joined" class="chatSection">
-        <!-- <p>Chat Room</p> -->
+        <p>Member List</p>
+        <p v-for="(member,index) in members" :key="index"> {{member.sender}}</p>
         <button @click="leaveChat" style="margin:10px">Leave Chat</button>
+
         <input type="text" v-model="msg" @keyup.enter="sendMsg" class="msgBox" placeholder="Type here...">
         <div class="chatRoom">
             <div v-for="msg in chatMsg" :key="msg.id">
@@ -32,24 +34,46 @@ export default {
             name:"",
             joined:false,
             msg:"",
-            chatMsg:[]
+            chatMsg:[],
+            members:[]
         }
     },
 
     methods:{
 
         joinChat(){
+            
 
-            this.joined = true
+            
             // console.log(this.name)
 
-            this.socketInstance = io("http://localhost:3000")
+            const socket = io("http://localhost:3000");
 
-            this.socketInstance.on(
+            // this.socketInstance = io("http://localhost:3000")
+            socket.on("connect", () => {
+                console.log("masuk")
+                this.joined = true
+            });
+
+            // if(socket.connected){
+            //     this.joined = true
+            // }
+            // else{
+            //     alert("cant connect")
+            // }
+
+            socket.on(
                 "message:received", (data) => {
                     this.chatMsg = this.chatMsg.concat(data)
                 }
             )
+
+            const memberlist = {
+                id: new Date().getTime(),
+                sender : this.name
+            }
+
+            this.members = this.members.concat(memberlist)
         },
 
         leaveChat(){
@@ -67,13 +91,6 @@ export default {
         },
 
         sendMsg(){
-            console.log(this.msg)
-            this.addMsg()
-            this.msg = ""
-        },
-
-        addMsg(){
-
             const message = {
                 id: new Date().getTime(),
                 sender : this.name,
@@ -83,7 +100,9 @@ export default {
             this.chatMsg = this.chatMsg.concat(message)
 
             this.socketInstance.emit('message', message)
-        }
+            this.msg = ""
+        },
+
     }
 
 }
