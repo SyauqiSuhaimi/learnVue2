@@ -8,19 +8,23 @@
     </div>
 
     <div v-if="joined" class="chatSection">
-        <p>Chat Room</p>
-        <input type="text" v-model="msg" @keyup.enter="sendMsg" class="msgBox">
+        <!-- <p>Chat Room</p> -->
+        <button @click="leaveChat" style="margin:10px">Leave Chat</button>
+        <input type="text" v-model="msg" @keyup.enter="sendMsg" class="msgBox" placeholder="Type here...">
         <div class="chatRoom">
             <div v-for="msg in chatMsg" :key="msg.id">
-                {{msg.sender + " : " + msg.body}}
+                <strong>{{msg.sender + " : "}}</strong>{{msg.body}}
             </div>
-            <!-- <p>Me : </p> -->
         </div>
     </div>
   </div>
 </template>
 
 <script>
+
+import io from "socket.io-client"
+
+
 export default {
 
     data(){
@@ -37,7 +41,29 @@ export default {
         joinChat(){
 
             this.joined = true
-            console.log(this.name)
+            // console.log(this.name)
+
+            this.socketInstance = io("http://localhost:3000")
+
+            this.socketInstance.on(
+                "message:received", (data) => {
+                    this.chatMsg = this.chatMsg.concat(data)
+                }
+            )
+        },
+
+        leaveChat(){
+
+            this.joined = false
+            const message = {
+                id: new Date().getTime(),
+                sender : this.name,
+                body: "Left the chat"
+            }
+
+            this.socketInstance.emit('message', message)
+            // this.socketInstance.emit('disconnect')
+            location.reload();
         },
 
         sendMsg(){
@@ -55,6 +81,8 @@ export default {
             }
 
             this.chatMsg = this.chatMsg.concat(message)
+
+            this.socketInstance.emit('message', message)
         }
     }
 
