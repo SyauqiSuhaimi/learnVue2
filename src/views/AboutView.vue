@@ -1,14 +1,24 @@
 <template>
-  <div>
-    <h1>To Do List</h1>
+  <div class="todoSection">
+    <h1 class="text-center">To Do List</h1>
     
-  <input type="text" v-model="text" @keyup.enter="addTodo">
-  <ul>
-    <li v-for="(todo,index) in todolist" :key="index" :class="todo.done ? 'checked' : 'notchecked'">
-      <i class="fa" aria-hidden="true" :class="todo.done ? 'fa-check' : 'fa-times'" @click="toggleTodo(index)"></i> 
+    <div class="row q-mb-md">
+      <div class="col">
+        <q-input type="text" v-model="text" @keyup.enter="addTodo" label="Todo" :dense="dense"/>
+      </div>
+    </div>
+
+  <div class="row todoList" v-for="(todo,index) in todolist" :key="index" :class="todo.done ? 'checked' : 'notchecked'" @click="toggleTodo(index)">
+    <div class="col-1 text-center">
+      <i class="fa" aria-hidden="true" :class="todo.done ? 'fa-check' : 'fa-times'"></i> 
+    </div>
+    <div class="col">
       {{todo.value}}
-      <i class="fa fa-trash" aria-hidden="true" @click="deleteTodo(index)"></i></li>
-  </ul>
+    </div>
+    <div class="col-1 text-center">
+      <i class="fa fa-trash" aria-hidden="true" @click="deleteTodo(index)"></i>
+    </div>
+  </div>
   </div>
   
 </template>
@@ -45,8 +55,28 @@ export default {
 </script>
 
 <style>
-  ul{
+
+  .todoSection{
+    max-width: 1000px;
+    margin: auto;
+    /* border: solid 5px; */
+    text-align: left;
+    font-size: 18px;
+  }
+  
+
+  .todoList{
         list-style-type: none;
+        padding: 10px 0;
+        margin: unset;
+    }
+
+    .todoList:hover
+    {
+      cursor: pointer;
+      box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+      filter: contrast(80%);
+      /* margin: 1px 0; */
     }
 
     i{
