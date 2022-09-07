@@ -61,7 +61,7 @@ export default {
 
                 this.socketInstance.emit('members', this.name)
 
-                this.socketInstance.on("members:new", (data) => {
+                this.socketInstance.on("updateMembers", (data) => {
                     this.members = data
                     console.log(this.members)
                     }
