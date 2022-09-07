@@ -3,12 +3,12 @@
     <h1>Chat App V2</h1>
 
     <div v-if="!joined">
-        <input type="text" v-model="name">
+        <input type="text" v-model="userName">
         <button @click="joinChat">Join Chat</button>
     </div>
 
     <div v-else>
-        <ChatDiv class="chatDiv"/>
+        <ChatDiv :userName="userName" @leaveChat="leaveChat" class="chatDiv"/>
     </div>
   </div>
 </template>
@@ -38,11 +38,17 @@ export default {
             socket.connect(); 
             socket.on("connect", () =>{
                 this.joined = true
+
             })
 
             socket.on("connect_error", (res) => {
                 alert("cant connect : " + res)
             });
+        },
+
+        leaveChat(){
+            this.joined = false
+            socket.disconnect()
         }
     }
 
@@ -53,7 +59,7 @@ export default {
 
 .chatDiv{
     max-width: 1200px;
-    border: solid 1px;
+    /* border: solid 1px; */
     margin: auto;
 }
 
