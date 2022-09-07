@@ -9,7 +9,7 @@
 
     <div v-if="joined" class="chatSection">
         <p>Member List</p>
-        <p v-for="(member,index) in members" :key="index"> {{member.sender}}</p>
+        <p v-for="(member,index) in members" :key="index"> {{member.memberName}}</p>
         <button @click="leaveChat" style="margin:10px">Leave Chat</button>
 
         <input type="text" v-model="msg" @keyup.enter="sendMsg" class="msgBox" placeholder="Type here...">
@@ -57,21 +57,15 @@ export default {
                     }
                 )
 
-                const memberlist = {
-                    id: new Date().getTime(),
-                    sender : this.name
-                }
-
                 //// Add new memberlist
 
-                this.socketInstance.emit('members', memberlist)
+                this.socketInstance.emit('members', this.name)
 
                 this.socketInstance.on("members:new", (data) => {
                     this.members = data
-                    console.log(data)
+                    console.log(this.members)
                     }
                 )
-
                 //////////
                 
             });
