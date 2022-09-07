@@ -44,36 +44,42 @@ export default {
         joinChat(){
             
 
-            
-            // console.log(this.name)
+            this.socketInstance = io("http://localhost:3000", {
+                reconnection: false
+            })
 
-            const socket = io("http://localhost:3000");
+            this.socketInstance.on("connect", () => {
 
-            // this.socketInstance = io("http://localhost:3000")
-            socket.on("connect", () => {
-                console.log("masuk")
                 this.joined = true
+
+                this.socketInstance.on("message:received", (data) => {
+                    this.chatMsg = this.chatMsg.concat(data)
+                    }
+                )
+
+                const memberlist = {
+                    id: new Date().getTime(),
+                    sender : this.name
+                }
+
+                //// Add new memberlist
+
+                this.socketInstance.emit('members', memberlist)
+
+                this.socketInstance.on("members:new", (data) => {
+                    this.members = data
+                    console.log(data)
+                    }
+                )
+
+                //////////
+                
             });
 
-            // if(socket.connected){
-            //     this.joined = true
-            // }
-            // else{
-            //     alert("cant connect")
-            // }
+            this.socketInstance.on("connect_error", (res) => {
+                alert("cant connect : " + res)
+            });
 
-            socket.on(
-                "message:received", (data) => {
-                    this.chatMsg = this.chatMsg.concat(data)
-                }
-            )
-
-            const memberlist = {
-                id: new Date().getTime(),
-                sender : this.name
-            }
-
-            this.members = this.members.concat(memberlist)
         },
 
         leaveChat(){
@@ -86,8 +92,7 @@ export default {
             }
 
             this.socketInstance.emit('message', message)
-            // this.socketInstance.emit('disconnect')
-            location.reload();
+            this.socketInstance.disconnect()
         },
 
         sendMsg(){
