@@ -4,7 +4,7 @@ import DataView from '../views/DataView.vue'
 import ConditionView from '../views/ConditionView.vue'
 import ParamsView from '../views/ParamsView.vue'
 import ParamDetails from '../views/ParamDetails.vue'
-import ChatApp from '../views/ChatApp.vue'
+import ChatApp from '../views/ChatApp2.vue'
 
 const routes = [
   {

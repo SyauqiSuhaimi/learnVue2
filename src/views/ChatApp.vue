@@ -8,8 +8,8 @@
     </div>
 
     <div v-if="joined" class="chatSection">
-        <p>Member List</p>
-        <p v-for="(member,index) in members" :key="index"> {{member.memberName}}</p>
+        <!-- <p>Member List</p>
+        <p v-for="(member,index) in members" :key="index"> {{member.memberName}}</p> -->
         <button @click="leaveChat" style="margin:10px">Leave Chat</button>
 
         <input type="text" v-model="msg" @keyup.enter="sendMsg" class="msgBox" placeholder="Type here...">
