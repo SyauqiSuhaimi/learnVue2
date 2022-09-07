@@ -8,16 +8,21 @@
     </div>
 
     <div v-else>
-        chat
-
+        <ChatDiv class="chatDiv"/>
     </div>
   </div>
 </template>
 
 <script>
+
 import socket from "../plugin/socket.js";
+import ChatDiv from "../components/ChatDiv.vue";
 
 export default {
+
+    components: {
+    ChatDiv
+},
 
     data(){
         return {
@@ -45,5 +50,11 @@ export default {
 </script>
 
 <style>
+
+.chatDiv{
+    max-width: 1200px;
+    border: solid 1px;
+    margin: auto;
+}
 
 </style>
