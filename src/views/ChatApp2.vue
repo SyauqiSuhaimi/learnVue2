@@ -2,9 +2,9 @@
   <div>
     <h1>Chat App V2</h1>
 
-    <div v-if="!joined">
-        <input type="text" v-model="userName">
-        <button @click="joinChat">Join Chat</button>
+    <div v-if="!chatAppStore.joined">
+        <input type="text" v-model="chatAppStore.userName">
+         <button @click="chatAppStore.joinChat">Join Chat</button>
     </div>
 
     <div v-else>
@@ -17,8 +17,15 @@
 
 import socket from "../plugin/socket.js";
 import ChatDiv from "../components/ChatDiv.vue";
+import { chatStore } from "@/plugin/globalState.js";
+
 
 export default {
+    setup () {
+        
+    const chatAppStore = chatStore()
+    return {chatAppStore}
+        },
 
     components: {
     ChatDiv
@@ -35,10 +42,12 @@ export default {
 
         joinChat(){
             // socket.auth = this.userName
-            socket.connect(); 
+            socket.connect();  
             socket.on("connect", () =>{
                 this.joined = true
-
+                // this.chatAppStore.userName = this.userName
+                socket.emit('members', this.chatAppStore.userName)
+                // console.log(this.chatAppStore.userName)
             })
 
             socket.on("connect_error", (res) => {

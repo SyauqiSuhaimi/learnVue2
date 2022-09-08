@@ -1,15 +1,15 @@
 <template>
     <div class="row">
       <div class="col-2 userDiv">
-          <div class="col-12 memberList">All Chat</div>
-          <div class="col-12 memberList" v-for="(member,index) in members" :key="index">{{member.memberName}}</div>
-          <div class="col-12 memberList" @click="leaveChat">Leave Chat</div>
+          <div class="col-12 memberList" :class="chatAppStore.allChat ? 'chatSelected' : ''">All Chat</div>
+          <div class="col-12 memberList" v-for="(member,index) in chatAppStore.members" :key="index">{{member.memberName}}</div>
+          <div class="col-12 memberList" @click="chatAppStore.leaveChat">Leave Chat</div>
           
       </div>
       <div class="col-10 chatDiv">
-        <input type="text" v-model="msg" @keyup.enter="sendMsg" class="msgBox" placeholder="Type here...">
+        <input type="text" v-model="chatAppStore.msg" @keyup.enter="chatAppStore.sendMsg" class="msgBox" placeholder="Type here...">
         <div class="chatRoom">
-            <div v-for="msg in chatMsg" :key="msg.id">
+            <div v-for="msg in chatAppStore.chatMsg" :key="msg.id">
                 <strong>{{msg.sender + " : "}}</strong>{{msg.body}}
             </div>
         </div>
@@ -19,7 +19,14 @@
   
   <script>
   import socket from "../plugin/socket.js";
+  import { chatStore } from "@/plugin/globalState.js";
+  
   export default {
+    setup () {
+        
+        const chatAppStore = chatStore()
+        return {chatAppStore}
+            },
 
     props:{
       userName:String
@@ -28,8 +35,8 @@
     data(){
       return {
         msg:"",
-        chatMsg:[],
-        members:[]
+        chatMsg:this.chatAppStore.chatMsg,
+        members:this.chatAppStore.members
       }
     },
 
@@ -68,18 +75,18 @@
 
     created(){
 
-      socket.emit('members', this.userName)
+      // socket.emit('members', this.userName)
 
-      socket.on("updateMembers", (data) => {
-          this.members = data
-          console.log(this.members)
-          }
-      )
+      // socket.on("updateMembers", (data) => {
+      //     this.members = data
+      //     console.log(this.members)
+      //     }
+      // )
 
-      socket.on("message:received", (data) => {
-          this.chatMsg = this.chatMsg.concat(data)
-          }
-      )
+      // socket.on("message:received", (data) => {
+      //     this.chatMsg = this.chatMsg.concat(data)
+      //     }
+      // )
     }
   
   }
@@ -117,6 +124,10 @@
     border: 2px solid rgb(123, 250, 125);
     text-align: start;
     padding: 5px;
+}
+
+.chatSelected{
+  background-color: rgb(186, 186, 186);
 }
   
   </style>
